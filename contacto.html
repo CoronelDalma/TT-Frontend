@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- custome styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+    <header>
+        <div id="header"></div>
+    </header>
+
+    <main class="container">
+        <div class="banner">
+            <h2 class="white">Contacto</h2>
+        </div>
+        <section class="contact">
+            <div style="height: 100%;display: flex;">
+                <div class="contactUs" style="height: max-content; margin: auto;">
+                    <div class="section-heading">
+                        <h6>Comunicate con nosotros</h6>
+                        <h2>Saludanos!</h2>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi ad odit officia explicabo praesentium ex nisi, ab quis quasi distinctio.</p>
+                    <ul style="margin: 12px 0;">
+                        <li><span>Direccion</span> Calle Lupita, FL 33160, Maravilla</li>
+                        <li><span>Teléfono</span> +123 456 7890</li>
+                        <li><span>Email</span> email@contact.com</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="more-info">
+                <div id="map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26278.958059663302!2d-58.428620800000004!3d-34.58216195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb59e37604cd7%3A0xe1f378f0dcf68992!2sParque%20El%20Rosedal!5e0!3m2!1ses!2sar!4v1729539944963!5m2!1ses!2sar" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <div>
+                    <form class="form" id="myForm"
+                        action="https://formspree.io/f/manynoor"
+                        method="POST"
+                        >
+                        <input type="text" name="nombre" id="nombre" placeholder="Nombre...">
+                        <input type="email" name="email" id="email" placeholder="Email...">
+                        <textarea name="message" placeholder="Mensaje" id="message"></textarea>
+
+                        <button type="submit">Send</button>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <div id="footer"></div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--- carga de componentes-->
+    <script src="js/components.js"></script>
+    <!-- functionality-->
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+    
+            if (!nombre || !email || !message) {
+                event.preventDefault();
+
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Campos incompletos!',
+                    text: 'Por favor, completa todos los campos del formulario.',
+                });
+            }
+        });
+    </script>
+</body>
+</html>

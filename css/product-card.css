@@ -1,0 +1,38 @@
+.product-card {
+    width: max(226px, 16vw);
+    max-width: 300px;
+    height: max-content;
+    background: var(--bg-300);
+    overflow: hidden;
+}
+.product-card a {
+    display: grid;
+    grid-template-rows: 235px max-content;
+    /* background-color: aqua; */
+}
+
+.icons-product-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.product-image {
+    height: 100%;
+}
+
+.info-product-card {
+    height:40%;
+    padding: 8px 16px;
+}
+
+.product-card-title {
+    height: 4.5rem;
+    /* white-space: nowrap; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 17rem;
+    margin: 0;
+    padding: 0;
+    color: var(--text-100);
+}

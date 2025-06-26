@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- custome styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-info">
+            <div class="header-icono">
+                <div>
+                    <img src="./images/loguito2.png" alt="logo negocio" class="header-logo">
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Buscar productos...">
+                    <button class="search-button">Buscar</button>
+                </div>
+            </div>
+
+            <ul class="d-flex flex-row mb-3 gap-3">
+                <li><a href="https://www.linkedin.com/in/dalma-giselle-coronel-57573613a/" target="_blank"><i class="fa-brands fa-linkedin-in fa-xl "></i></a></li>
+                <li><a href="https://github.com/CoronelDalma" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+                <li><a href="https://discord.gg/y7BcevZF" target="_blank"><i class="fa-brands fa-discord fa-xl"></i></a></li>
+            </ul>   
+        </div>
+            
+        <div class="header-nav">
+            <div class="nav-left">
+                <nav>
+                    <ul class="nav justify-content-center align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="products.html">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contacto.html">Contacto</a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="btn-group">
+                                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Categorías
+                                </button>
+                                <ul class="dropdown-menu p-2">
+                                    <li><a href="/products.html">Categoria 1</a></li>
+                                    <li><a href="/products.html">Categoria 2</a></li>
+                                    <li><a href="/products.html">Categoria 3</a></li>
+                                    <li><a href="/products.html">Categoria 4</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin.html">Gestión</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="nav-right">
+                <nav>
+                    <ul class="nav justify-content-center">
+                        <li>
+                            <label class="switch">
+                                <input type="checkbox" id="theme-toggle">
+                                <span class="slider"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <a href="cart.html">
+                                <i class="fa-solid fa-cart-shopping fa-xl"></i>
+                                <span class="cart-count">2</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <hr class="line">
+    </header>
+</body>
+</html>

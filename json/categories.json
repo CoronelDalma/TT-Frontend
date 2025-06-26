@@ -1,0 +1,95 @@
+{
+    "groceries": {
+        "icon": "fa-apple-alt",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/groceries/Apple/thumbnail.png"
+    },
+    "home-decoration": {
+        "icon": "fa-couch",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/home-decoration/Family%20Tree%20Photo%20Frame/1.png"
+    },
+    "beauty": {
+        "icon": "fa-magic",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
+    },
+    "sports-accessories": {
+        "icon": "fa-futbol",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/sports-accessories/American%20Football/1.png"
+    },
+    "fragrances": {
+        "icon": "fa-bottle-droplet",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/2.png"
+    },
+    "furniture": {
+        "icon": "fa-chair",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/furniture/Annibale%20Colombo%20Bed/2.png"
+    },
+    "kitchen-accessories": {
+        "icon": "fa-kitchen-set",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/kitchen-accessories/Spice%20Rack/1.png"
+    },
+    "laptops": {
+        "icon": "fa-laptop",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/laptops/Apple%20MacBook%20Pro%2014%20Inch%20Space%20Grey/1.png"
+},
+    "mens-shirts": {
+        "icon": "fa-shirt",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/mens-shirts/Blue%20&%20Black%20Check%20Shirt/4.png"
+    },
+    "mens-shoes": {
+        "icon": "fa-shoe-prints",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/mens-shoes/Nike%20Air%20Jordan%201%20Red%20And%20Black/3.png"
+    },
+    "mens-watches": {
+        "icon": "fa-user-clock",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/mens-watches/Rolex%20Cellini%20Moonphase/3.png"
+    },
+    "mobile-accessories": {
+        "icon": "fa-headphones",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20Airpods/1.png"
+    },
+    "motorcycle": {
+        "icon": "fa-motorcycle",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/motorcycle/Scooter%20Motorcycle/2.png"
+    },
+    "skin-care": {
+        "icon": "fa-mask",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/skin-care/Olay%20Ultra%20Moisture%20Shea%20Butter%20Body%20Wash/1.png"
+    },
+    "smartphones": {
+        "icon": "fa-mobile-screen",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/smartphones/iPhone%206/3.png"
+    },
+    "sunglasses": {
+        "icon": "fa-glasses",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/sunglasses/Black%20Sun%20Glasses/2.png"
+    },
+    "tablets": {
+        "icon": "fa-tablet",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/tablets/iPad%20Mini%202021%20Starlight/1.png"
+    },
+    "tops": {"icon":"","imageUrl": "https://cdn.dummyjson.com/products/images/tops/Girl%20Summer%20Dress/2.png"},
+    "vehicle": {
+        "icon": "fa-car",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/vehicle/300%20Touring/6.png"
+    },
+    "womens-bags": {
+        "icon": "fa-bag-shopping",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/womens-bags/Blue%20Women's%20Handbag/3.png"
+    },
+    "womens-dresses": {
+        "icon": "fa-person-dress",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/womens-dresses/Black%20Women's%20Gown/3.png"
+    },
+    "womens-jewellery": {
+        "icon": "fa-ring",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/womens-jewellery/Green%20Oval%20Earring/2.png"
+    },
+    "womens-shoes": {
+        "icon": "fa-shoe-prints",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/womens-shoes/Black%20&%20Brown%20Slipper/3.png"
+    },
+    "womens-watches": {
+        "icon": "fa-user-clock",
+        "imageUrl": "https://cdn.dummyjson.com/products/images/womens-watches/IWC%20Ingenieur%20Automatic%20Steel/2.png"
+    }
+}
