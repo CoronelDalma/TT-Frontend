@@ -83,23 +83,56 @@ function markCategories() {
 }
 
 function displayArticles() {
-    let articles = fetchArticles()
+    const articleContainer = document.getElementById("articles-list");
+    articleContainer.innerHTML = ""; // Clear existing articles
+    articleContainer.innerHTML += `
+        <h1 class="h1-center">Artículos</h1>
+    `;
+    fetchArticles()
     .then(articles => {
         console.log(articles);
-        /*if (articles && articles.length > 0) {
-            const articleContainer = document.getElementById("article-list");
-            articleContainer.innerHTML = ""; // Clear existing articles
-
+        if (articles && articles.length > 0) {
             articles.forEach(article => {
-                const articleItem = document.createElement("li");
-                articleItem.textContent = article.title;
-                articleContainer.appendChild(articleItem);
+            articleContainer.innerHTML += `
+                <div class="cart-item" id="item-${article.id}">
+                    <img src=${article.imagesUrl[0]} alt=${article.name}>
+                    <div class="cart-title">
+                        <h2>${article.name}</h2>
+                        <p>${article.description}</p>
+                    </div>
+                    <p class="price">$${article.price}</p>
+
+                    <div class="article-btn">
+                        <button type="button" class="btn btn-info" data-id="${article.id}">
+                            <i class="fa-solid fa-trash"></i>Editar
+                        </button>
+                        <button type="button" class="btn btn-danger" onClick="deleteArticle(${article.id})" data-id="${article.id}">
+                            <i class="fa-solid fa-trash"></i>Eliminar
+                        </button>
+                    </div>
+                </div>
+            `;
             });
         } else {
-            const articleContainer = document.getElementById("article-list");
+            const articleContainer = document.getElementById("articles-list");
             articleContainer.innerHTML = "<li>No hay artículos disponibles</li>";
-        }*/
+        }
     });
+}
+
+function deleteArticle(id) {
+    // Confirmación antes de eliminar
+    if (confirm("¿Deseás eliminar este artículo?")) {
+        // Llamada DELETE al backend
+        fetch(`${API_ARTICLES_URL}/${id}`, {
+            method: "DELETE"
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Error al eliminar"); // Verificamos que la respuesta sea exitosa
+            displayArticles(); // Actualizamos la lista de artículos
+        })
+        .catch(error => console.error("Error al eliminar artículo:", error)); // Manejo de errores
+    }
 }
 
 // ---- Handling the FORM to add a new article
@@ -123,11 +156,6 @@ function createArticulo() {
     //const stock = parseInt(document.getElementById("article-stock").value);
 
     // TODO validaciones antes de crear el articulo
-    console.log("name "+ name);
-    console.log("price ",price);
-    console.log("description ",description);
-    console.log(images);
-    //console.log("stock ",stock);
     if (!name || isNaN(price) || price <= 0) {
         alert("Por favor complete correctamente los campos.");
         return;
@@ -197,8 +225,8 @@ function addSelectedCategory (name) {
 function renderSelectedCategories() {
     categoryContainer.innerHTML = "";
     selectedCategories.forEach(cat => {
-        const chip = document.createElement("span");
-        chip.className = "categoria-tag";
+        const chip = document.createElement("p");
+        chip.style.display = "inline-block";
         chip.textContent = cat.name;
 
         const cerrar = document.createElement("button");

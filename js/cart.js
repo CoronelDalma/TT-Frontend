@@ -74,7 +74,7 @@ function displayCart() {
                         <h2>${item.title}</h2>
                         <p>${item.description}</p>
                     </div>
-                    <div class="price">$${item.price}</div>
+                    <p class="price">$${item.price}</p>
                     <div class="quantity-total">
                         <div>
                             <div class="input-group">
