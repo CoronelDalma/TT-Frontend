@@ -124,8 +124,6 @@ function createArticulo() {
         return;
     }
 
-    console.log(images);
-
     const article = { name, description, price, stock:5, imagesUrl: images, categories: selectedCategories};
     let id = null;
     const url = id ? `${API_ARTICLES_URL}/${id}` : API_ARTICLES_URL;
@@ -143,6 +141,8 @@ function createArticulo() {
     .then(() => {
         // Limpiamos el formulario y recargamos la tabla
         document.getElementById("add-article-form").reset();
+        selectedCategories = [];
+        renderSelectedCategories();
         //document.getElementById("idArticulo").value = "";
         displayArticles();
     })
