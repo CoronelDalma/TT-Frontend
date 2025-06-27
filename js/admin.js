@@ -105,6 +105,15 @@ function displayArticles() {
 // ---- Handling the FORM to add a new article
 document.getElementById("add-article-form").addEventListener("submit", addArticulo);
 
+function resetForm() {
+    // Limpiamos el formulario y recargamos la tabla
+    document.getElementById("add-article-form").reset();
+    selectedCategories = [];
+    renderSelectedCategories();
+    //document.getElementById("idArticulo").value = "";
+    displayArticles();
+}
+
 function createArticulo() {
     const name = document.getElementById("article-name").value.trim();
     const price = parseFloat(document.getElementById("article-price").value);
@@ -139,12 +148,7 @@ function createArticulo() {
         return response.json();
     })
     .then(() => {
-        // Limpiamos el formulario y recargamos la tabla
-        document.getElementById("add-article-form").reset();
-        selectedCategories = [];
-        renderSelectedCategories();
-        //document.getElementById("idArticulo").value = "";
-        displayArticles();
+        resetForm();
     })
     .catch(error => console.error("Error al guardar artículo:", error)); // Manejo de errores
 }
