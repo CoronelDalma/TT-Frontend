@@ -17,23 +17,6 @@
     --medium-text: 700;
     --bold-text: 900;
 }
-/*
-:root.dark-theme {
-    --primary-100: #FF914D; 
-    --primary-200: #E67835; 
-    --primary-300: #CCA144;  
-    --accent-100: #2A2A2A;  
-    --accent-200: #616161;  
-    --text-100: #F5F5F5;  
-    --text-200: #D1D1D1;  
-    --bg-100: #1D1F21;  
-    --bg-200: #292C2E;  
-    --bg-300: #383C40;  
-    
-    --background-image: url(../images/background/low-poly-grid-dark-haikei.svg);
-    --shadow-color: var(--accent-100);
-} */
-
 
 * {
     box-sizing: border-box;
@@ -128,7 +111,7 @@ ul, li {
 }
 
 
-h1,h2,h3,h4,h5,h6 {
+h1,h2,h3,h4,h5,h6,label {
     color: var(--text-100);
 }
 
@@ -200,6 +183,7 @@ input, textarea {
     padding: 4px 16px;
     height: 32px;
 }
+
 input:focus, textarea:focus{
     border-color: var(--primary-200);
     outline: none;

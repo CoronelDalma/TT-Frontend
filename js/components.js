@@ -48,7 +48,7 @@ fetch('Components/Header.html')
     // theme
     changeTheme();
     
-}); 
+});
 
 /* ----- footer -----*/
 fetch('Components/Footer.html')

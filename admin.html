@@ -18,77 +18,58 @@
     <link rel="stylesheet" href="css/header.css">
 </head>
 <body>
-    <header class="header">
-        <div class="header-info">
-            <div class="header-icono">
-                <div>
-                    <img src="./images/loguito2.png" alt="logo negocio" class="header-logo">
-                </div>
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Buscar productos...">
-                    <button class="search-button">Buscar</button>
-                </div>
-            </div>
-
-            <ul class="d-flex flex-row mb-3 gap-3">
-                <li><a href="https://www.linkedin.com/in/dalma-giselle-coronel-57573613a/" target="_blank"><i class="fa-brands fa-linkedin-in fa-xl "></i></a></li>
-                <li><a href="https://github.com/CoronelDalma" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
-                <li><a href="https://discord.gg/y7BcevZF" target="_blank"><i class="fa-brands fa-discord fa-xl"></i></a></li>
-            </ul>   
-        </div>
-
-        <div class="header-nav">
-            <div class="nav-left">
-                <nav>
-                    <ul class="nav justify-content-center align-items-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="products.html">Productos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contacto.html">Contacto</a>
-                        </li>
-                        <li class="nav-item">
-                            <div class="btn-group">
-                                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Categorías
-                                </button>
-                                <ul class="dropdown-menu p-2">
-                                    <li><a href="/products.html">Categoria 1</a></li>
-                                    <li><a href="/products.html">Categoria 2</a></li>
-                                    <li><a href="/products.html">Categoria 3</a></li>
-                                    <li><a href="/products.html">Categoria 4</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="admin.html">Gestión</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="nav-right">
-                <nav>
-                    <ul class="nav justify-content-center">
-                        <li>
-                            <label class="switch">
-                                <input type="checkbox" id="theme-toggle">
-                                <span class="slider"></span>
-                            </label>
-                        </li>
-                        <li>
-                            <a href="cart.html">
-                                <i class="fa-solid fa-cart-shopping fa-xl"></i>
-                                <span class="cart-count">2</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        <hr class="line">
+    <header>
+        <div id="header"></div>
     </header>
+    <main>
+        <div class="banner">
+            <h2 class="white">Administración</h2>
+        </div>
+        <section>
+            <h2>Gestión de Productos</h2>
+            <div>
+                <form id="add-article-form">
+                    <div id="categories">
+                        <label>Categorías existentes</label>
+                        <div id="sugerenciasCategorias" class="checkbox-categorias"></div>
+                        <input type="text" id="categoryInput" placeholder="Escribí una categoría y presioná Enter" />
+                        <div id="categories-container"></div>
+                    </div>
+                    <label>Nombre</label>
+                    <input type="text" id="article-name" placeholder="Nombre del producto" required>
+                    <label>Precio</label>
+                    <input type="number" id="article-price" placeholder="Precio del producto" step="0.01" required>
+                    <label>Descripcion</label>
+                    <textarea id="article-description" rows="4" placeholder="Descripción del producto" required></textarea>
+                    <label for="article-image">Imágenes (URLs, separadas por comas)</label>
+                    <input type="text" id="article-image" placeholder="URL de la imagen del producto">
+                    <div>
+                        <button id="add-article" type="submit">Agregar Producto</button>
+                        <button id="cancel" type="button">Cancelar</button>
+                    </div>
+                    <div id="result-message"></div>
+                </form>
+            </div>
+
+            <div id="product-list">
+                <!-- Aquí se mostrarán los productos -->
+            </div>
+        </section>
+        <section>
+            <h2>Gestión de Usuarios</h2>
+            <button id="add-user">Agregar Usuario</button>
+            <div id="user-list">
+                <!-- Aquí se mostrarán los usuarios -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div id="footer"></div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--- carga de componentes-->
+    <script src="js/components.js"></script>
+    <script src="js/admin.js"></script>
+    
 </body>
 </html>

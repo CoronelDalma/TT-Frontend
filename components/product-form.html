@@ -1,0 +1,20 @@
+<form id="add-product-form">
+    <div id="categories">
+        <label for="category-select">Seleccionar Categoría/s:</label>
+        <select id="category-select" required multiple>
+            <option value="" disabled selected>Seleccione una categoría</option>
+            <!-- Las opciones de categorías se llenarán dinámicamente -->
+        </select>  
+        <label>Nueva categoría (opcional)</label>
+        <input type="text" id="nuevaCategoria" /> 
+    </div>
+    <input type="text" id="product-name" placeholder="Nombre del producto" required>
+    <input type="number" id="product-price" placeholder="Precio del producto" required>
+    <textarea id="product-description" rows="4" placeholder="Descripción del producto" required></textarea>
+    <input type="text" id="product-image" placeholder="URL de la imagen del producto">
+    <div>
+        <button id="add-product" type="submit">Agregar Producto</button>
+        <button id="cancel" type="button">Cancelar</button>
+    </div>
+    <div id="result-message"></div>
+</form>
