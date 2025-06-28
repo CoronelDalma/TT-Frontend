@@ -4,6 +4,7 @@ const API_CATEGORIES_URL = "http://localhost:8080/api/categories";
 
 // when the page loads
 document.addEventListener("DOMContentLoaded", function () {
+    //resetForm();
     displayCategories();
     displayArticles();            
 });
@@ -100,10 +101,13 @@ function displayArticles() {
                         <h2>${article.name}</h2>
                         <p>${article.description}</p>
                     </div>
+                    <div style="width:200px">
+                        <p>${article.categories.map(cat => cat.name).join(", ")}</p>
+                    </div>
                     <p class="price">$${article.price}</p>
 
                     <div class="article-btn">
-                        <button type="button" class="btn btn-info" data-id="${article.id}">
+                        <button type="button" class="btn btn-info" onClick="editItem(${article.id})" data-id="${article.id}">
                             <i class="fa-solid fa-trash"></i>Editar
                         </button>
                         <button type="button" class="btn btn-danger" onClick="deleteArticle(${article.id})" data-id="${article.id}">
@@ -135,12 +139,30 @@ function deleteArticle(id) {
     }
 }
 
+function editItem(id) {
+    fetch(`${API_ARTICLES_URL}/${id}`)
+    .then(response => response.json())
+    .then(item => {
+        document.getElementById("item-id").value = item.id;
+        document.getElementById("article-name").value = item.name;
+        document.getElementById("article-price").value = item.price;
+        document.getElementById("article-description").value = item.description;
+        document.getElementById("article-image").value = item.imagesUrl;
+        selectedCategories = item.categories;
+        renderSelectedCategories();
+        markCategories();
+    })
+    .catch(error => console.error("Error al obtener artículo:", error));
+}
+
 // ---- Handling the FORM to add a new article
 document.getElementById("add-article-form").addEventListener("submit", addArticulo);
+document.getElementById("cancel").addEventListener("click",resetForm);
 
 function resetForm() {
     // Limpiamos el formulario y recargamos la tabla
     document.getElementById("add-article-form").reset();
+    document.getElementById("item-id").value = null;
     selectedCategories = [];
     renderSelectedCategories();
     //document.getElementById("idArticulo").value = "";
@@ -162,7 +184,7 @@ function createArticulo() {
     }
 
     const article = { name, description, price, stock:5, imagesUrl: images, categories: selectedCategories};
-    let id = null;
+    let id = document.getElementById("item-id") ? document.getElementById("item-id").value : null ;
     const url = id ? `${API_ARTICLES_URL}/${id}` : API_ARTICLES_URL;
     const method = id ? "PUT" : "POST";
     // Enviamos el artículo al backend usando fetch
