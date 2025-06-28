@@ -4,9 +4,9 @@ const API_CATEGORIES_URL = "http://localhost:8080/api/categories";
 
 // when the page loads
 document.addEventListener("DOMContentLoaded", function () {
-    //resetForm();
+    resetForm();
     displayCategories();
-    displayArticles();            
+    //displayArticles();            
 });
 
 async function fetchCategories() {
@@ -119,7 +119,7 @@ function displayArticles() {
             });
         } else {
             const articleContainer = document.getElementById("articles-list");
-            articleContainer.innerHTML = "<li>No hay artículos disponibles</li>";
+            articleContainer.innerHTML += "<p>No hay artículos disponibles</p>";
         }
     });
 }
@@ -151,6 +151,12 @@ function editItem(id) {
         selectedCategories = item.categories;
         renderSelectedCategories();
         markCategories();
+
+        // Scroll
+        const form = document.getElementById("product");
+        if (form) {
+            form.scrollIntoView( { behavior: "smooth"});
+        }
     })
     .catch(error => console.error("Error al obtener artículo:", error));
 }
@@ -214,6 +220,7 @@ const categoryInput = document.getElementById("categoryInput");
 const sugerenciasDiv = document.getElementById("sugerenciasCategorias");
 sugerenciasDiv.style.display = "flex";
 sugerenciasDiv.style.gap = "1rem";
+sugerenciasDiv.style.flexWrap = "wrap";
 categoryInput.addEventListener("keydown", function (e) {
     const name = this.value.trim();
     if (e.key === "Enter" && name) {
@@ -249,6 +256,7 @@ function renderSelectedCategories() {
     selectedCategories.forEach(cat => {
         const chip = document.createElement("p");
         chip.style.display = "inline-block";
+        chip.style.margin = "0 1.5rem";
         chip.textContent = cat.name;
 
         const cerrar = document.createElement("button");

@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
     <header>
@@ -28,30 +29,39 @@
         </div>
         <section>
             <h2>Gestión de Productos</h2>
-            <div>
-                <form id="add-article-form">
-                    <input type="hidden" id="item-id">
-                    <div id="categories">
-                        <label>Categorías existentes</label>
-                        <div id="sugerenciasCategorias" class="checkbox-categorias"></div>
-                        <input type="text" id="categoryInput" placeholder="Escribí una categoría y presioná Enter" />
-                        <div id="categories-container"></div>
-                    </div>
+            <h3 id="product">Producto</h3>
+
+            <form id="add-article-form">
+                <input type="hidden" id="item-id">
+                <div class="item-form">
                     <label>Nombre</label>
                     <input type="text" id="article-name" placeholder="Nombre del producto" required>
+                </div>
+                <div class="item-form">
                     <label>Precio</label>
                     <input type="number" id="article-price" placeholder="Precio del producto" step="0.01" required>
+                </div>
+                <div class="item-form">
                     <label>Descripcion</label>
                     <textarea id="article-description" rows="4" placeholder="Descripción del producto" required></textarea>
+                </div>
+                <div class="item-form">
                     <label for="article-image">Imágenes (URLs, separadas por comas)</label>
                     <input type="text" id="article-image" placeholder="URL de la imagen del producto">
-                    <div>
-                        <button id="add-article" type="submit">Agregar Producto</button>
-                        <button id="cancel" type="button">Cancelar</button>
-                    </div>
-                    <div id="result-message"></div>
-                </form>
-            </div>
+                </div>
+
+                <div id="categories">
+                    <label>Seleccione categoria/s:</label>
+                    <div id="sugerenciasCategorias" class="checkbox-categorias"></div>
+                    <input type="text" id="categoryInput" placeholder="Escribí una categoría y presioná Enter" />
+                    <div id="categories-container"></div>
+                </div>
+                <div>
+                    <button id="add-article" type="submit">Agregar Producto</button>
+                    <button id="cancel" type="button">Cancelar</button>
+                </div>
+                <div id="result-message"></div>
+            </form>
 
             <div id="articles-list" class="container">
                 <!-- Aquí se mostrarán los productos -->
