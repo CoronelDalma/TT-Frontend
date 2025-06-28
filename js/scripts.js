@@ -98,22 +98,23 @@ function updateQuantity() {
 function displayData(data) {
     const container = document.querySelector('.container-cards');
     container.innerHTML = '';
-    if (data.total > 0) {
-        data.products.forEach(product => {
+    console.log(data);
+    if (data.length > 0) {
+        data.forEach(product => {
             container.innerHTML += `
                 <li class="my-card product-card">
                     <a href="product.html" class="product-${product.id}" id="${product.id}">
                         <div class="image-container imageh-75">
                             <div class="icons-product-card">
-                                <div class="star-icon">${product.rating}<i class="fa-solid fa-star"></i></div>
+                                <div class="star-icon">5<i class="fa-solid fa-star"></i></div>
                                 <div class="price-tag">${product.price}</div>
                             </div>
-                            <img src=${product.images[0]} alt=${product.title} class="card-image product-image">
+                            <img src=${product.imagesUrl[0]} alt=${product.name} class="card-image product-image">
                         </div>
                         <div class="info-product-card">
                             <div class="info-card">
-                                <p class="white">${product.category}</p>
-                                <h6 class="product-card-title">${product.title}</h6>
+                                <p class="white">${product.categories[0]?.name}</p>
+                                <h6 class="product-card-title">${product.name}</h6>
                             </div>
                         </div>
                     </a> 
@@ -124,7 +125,7 @@ function displayData(data) {
             `;
 
             // add cart buttons
-            var addCartBtn =  document.querySelectorAll('.add-cart');
+            /*var addCartBtn =  document.querySelectorAll('.add-cart');
             addCartBtn.forEach(btn => {
                 btn.addEventListener('click', function(event) {
                     event.preventDefault();
@@ -140,7 +141,7 @@ function displayData(data) {
                     event.preventDefault();
                     seeProduct(data.products[(link.id % limit)-1]);
                 })          
-            })
+            })*/
         })
     } else {
         container.innerHTML = `
@@ -223,9 +224,10 @@ const limit = 30;
 let pages = 0;
 window.addEventListener("load", () => {
     var search = localStorage.getItem("search");
-    var url = 'https://dummyjson.com/products';
+    var url = 'http://localhost:8080/api/articulos';
     if(search){
-        url =  `https://dummyjson.com/products/search?q=${search} `
+        //url =  `https://dummyjson.com/products/search?q=${search} `
+        url = `http://localhost:8080/api/articulos/item/${search}`
         localStorage.removeItem("search");
     }
     var category = localStorage.getItem("category");
