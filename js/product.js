@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    var product = JSON.parse(localStorage.getItem("selectedProduct"));
+    var product = JSON.parse(localStorage.getItem("selectedProduct")) || {};
     var cart = JSON.parse(localStorage.getItem("cart")) ||[];
     let find = cart.find(item => item.id === product.id);
 
@@ -9,10 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     viewProduct.innerHTML = "";
     viewProduct.innerHTML += `
         <div class="product-images">
-            <img src=${product.images[0]} alt="${product.title}" class="card-image">
+            <img src=${product.imagesUrl[0]} alt="${product.name}" class="card-image">
         </div>
         <div class="product-info">
-            <h1>${product.title}</h1>
+            <h1>${product.name}</h1>
             <div class="price-info">
                 <p class="price-tag">$${product.price}</p>
                 <p class="product-stock">${product.stock} En stock</p>
@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     `;
 
+    /* WIP: reviews section
     const reviews = document.querySelector(".reviews-container");
     reviews.innerHTML = "";
     product.reviews.forEach(review => {
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p>${review.comment}</p>
             </div>
         `
-    })
+    })*/
 
     //update cart
     const addCartBtn = document.querySelector(".btn-clear");

@@ -98,7 +98,6 @@ function updateQuantity() {
 function displayData(data) {
     const container = document.querySelector('.container-cards');
     container.innerHTML = '';
-    console.log(data);
     if (data.length > 0) {
         data.forEach(product => {
             container.innerHTML += `
@@ -133,15 +132,15 @@ function displayData(data) {
                     let index = data.products.findIndex(item => item.id === Number(btn.id));
                     addCart(data.products[index]);
                 })
-            })
+            })*/
             // see product
             var links = document.querySelectorAll('[class^="product-"]');
             links.forEach((link) => {
                 link.addEventListener('click', function(event) {
                     event.preventDefault();
-                    seeProduct(data.products[(link.id % limit)-1]);
+                    seeProduct(data[(link.id % limit)-2]);
                 })          
-            })*/
+            })
         })
     } else {
         container.innerHTML = `
