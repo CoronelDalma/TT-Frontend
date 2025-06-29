@@ -1,16 +1,16 @@
+const URL_CATEGORIES = "http://localhost:8080/api/categories";
+const URL_ITEMS = "http://localhost:8080/api/articulos"
+
 // Get products category list
-fetch('json/categories.json')
-.then(res => res.json())
-.then(iconMap => {
-    fetch('https://dummyjson.com/products/categories')
+fetch(URL_CATEGORIES)
     .then(res => res.json())
     .then(data => {
         const categoryList=document.querySelector(".category-filter");
 
         data.forEach(category => {
-            const iconClass= iconMap[category.slug].icon || "fa-question";
+            const iconClass= category.icon || "fa-question";
             categoryList.innerHTML += `
-                <li><a href="${category.url}" class="category-link d-flex align-items-center justify-content-between"><span>${category.name}</span><i class="fa-solid ${iconClass} icon-link"></i></a></li>
+                <li><a href="${URL_ITEMS}/category/${category.name}" class="category-link d-flex align-items-center justify-content-between"><span>${category.name}</span><i class="fa-solid ${iconClass} icon-link"></i></a></li>
             `;
         });
 
@@ -28,13 +28,13 @@ fetch('json/categories.json')
                 })
             })
         })
-    });
-})
+});
 
 function updateData(currentPage) {
     // Get products
     const from= limit * (currentPage-1);
-    fetch(`https://dummyjson.com/products?limit=${limit}&skip=${from}&select=title,price,rating,images,category,description,stock,reviews`)
+    //fetch(`https://dummyjson.com/products?limit=${limit}&skip=${from}&select=title,price,rating,images,category,description,stock,reviews`)
+    fetch(URL_ITEMS)
     .then(res => res.json())
     .then(data => {
         displayData(data);
@@ -223,15 +223,14 @@ const limit = 30;
 let pages = 0;
 window.addEventListener("load", () => {
     var search = localStorage.getItem("search");
-    var url = 'http://localhost:8080/api/articulos';
+    var url = URL_ITEMS;
     if(search){
-        //url =  `https://dummyjson.com/products/search?q=${search} `
-        url = `http://localhost:8080/api/articulos/item/${search}`
+        url = `${URL_ITEMS}/item/${search}`
         localStorage.removeItem("search");
     }
     var category = localStorage.getItem("category");
     if (category) {
-        url =  `https://dummyjson.com/products/category/${category}`;
+        url =  `${URL_ITEMS}/category/${category}`;
         localStorage.removeItem("category");
     }
 

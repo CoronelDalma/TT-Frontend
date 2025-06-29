@@ -216,12 +216,33 @@ function addArticulo(event) {
 
 
 // ----- handler create category
-const categoryInput = document.getElementById("categoryInput");
 const sugerenciasDiv = document.getElementById("sugerenciasCategorias");
 sugerenciasDiv.style.display = "flex";
 sugerenciasDiv.style.gap = "1rem";
 sugerenciasDiv.style.flexWrap = "wrap";
-categoryInput.addEventListener("keydown", function (e) {
+
+document.getElementById("createCategory").addEventListener("click",createCategory);
+
+function createCategory(event) {
+    const categoryInput = document.getElementById("categoryInput");
+    const icon = document.getElementById("categoryIcon").value.trim();
+    const name = categoryInput.value.trim().toUpperCase();
+    if (name) {
+        event.preventDefault();
+        // pegarle a la api para crear la nueva categoria
+        fetch(API_CATEGORIES_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({"name": name, "icon": icon})
+        })
+        .then(response => {
+            addSelectedCategory(name);
+            this.value = "";
+            displayCategories();
+        })
+    }
+}
+/*categoryInput.addEventListener("keydown", function (e) {
     const name = this.value.trim();
     if (e.key === "Enter" && name) {
         e.preventDefault();
@@ -229,7 +250,7 @@ categoryInput.addEventListener("keydown", function (e) {
         fetch(API_CATEGORIES_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({"name": name})
+            body: JSON.stringify({"name": name, "icon": icon})
         })
         .then(response => {
             addSelectedCategory(this.value.trim());
@@ -238,7 +259,7 @@ categoryInput.addEventListener("keydown", function (e) {
         })
 
     }
-});
+});*/
 
 function addSelectedCategory (name) {
     if (!selectedCategories.find(cat => cat.name === name)) {
@@ -258,6 +279,7 @@ function renderSelectedCategories() {
         chip.style.display = "inline-block";
         chip.style.margin = "0 1.5rem";
         chip.textContent = cat.name;
+        console.log(cat);
 
         const cerrar = document.createElement("button");
         cerrar.textContent = "×";
