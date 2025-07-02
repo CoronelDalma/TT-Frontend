@@ -124,15 +124,19 @@ function displayData(data) {
             `;
 
             // add cart buttons
-            /*var addCartBtn =  document.querySelectorAll('.add-cart');
+            var addCartBtn =  document.querySelectorAll('.add-cart');
             addCartBtn.forEach(btn => {
                 btn.addEventListener('click', function(event) {
                     event.preventDefault();
                     //let index = (((btn.id-1) % data.products.length) + data.products.length) % data.products.length;
                     let index = data.products.findIndex(item => item.id === Number(btn.id));
-                    addCart(data.products[index]);
+                    console.log("index", index);
+                    console.log("btn.id", btn.id);
+                    console.log("data.products[index]", data.products[index]);
+                    console.log("data.products", data.products);
+                   // addCart(data.products[index]);
                 })
-            })*/
+            })
             // see product
             var links = document.querySelectorAll('[class^="product-"]');
             links.forEach((link) => {
