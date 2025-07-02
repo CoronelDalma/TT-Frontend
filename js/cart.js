@@ -1,28 +1,23 @@
 const ORDERS_URL = "http://localhost:8080/api/orders";
 
-function getItems() {
-    return fetch(ORDERS_URL)
-        .then(response => response.json())
-        .then(orders => {
-            const allItemsByUser = orders.filter(order => order.customer === null); // I don't have any clients yet.
-            return allItemsByUser.flatMap(order => order.items).map(item => {
-                let inTheCart = item.qty; // Default to 1 if not specified
-                return {
-                    id: item.articulo.id,
-                    title: item.articulo.name,
-                    description: item.articulo.description,
-                    price: item.articulo.price,
-                    stock: item.articulo.stock,
-                    inTheCart: inTheCart, // Default to 1 if not specified
-                    images: item.articulo.imagesUrl || ["https://via.placeholder.com/150"] // Default image if none provided
-                };
-            });
-        })
-        .catch(error => {
-            console.error("Error fetching cart items:", error);
-            return [];
-        });
-}
+async function getItems() {
+    const response = await fetch(ORDERS_URL);
+    const orders = await response.json();
+    const allItemsByUser = orders.filter(order => order.customer === null); // I don't have any clients yet.
+    return allItemsByUser.flatMap(order => order.items).map(item => {
+        let qty = item.qty || 1; // Default to 1 if not specified
+        return {
+            id: item.articulo.id,
+            title: item.articulo.name,
+            description: item.articulo.description,
+            price: item.articulo.price,
+            stock: item.articulo.stock,
+            inTheCart: qty,
+            images: item.articulo.imagesUrl || ["https://via.placeholder.com/150"] // Default image if none provided
+        };
+    });
+};
+
 
 function updateCartCount() {
     getItems().then(cart => {
@@ -77,8 +72,8 @@ function modifyQuantities(event) {
 }
 
 // display
-function displayCart() {
-    let orders = getItems();
+async function displayCart() {
+    let items = await getItems();
     var total = 0;
 
     const container = document.querySelector(".container");
@@ -87,43 +82,38 @@ function displayCart() {
         <h1 class="h1-center">Carrito de Compras</h1>
     `;
   
-    console.log("orders", orders);
-    orders.then(data => {
-        data.forEach(item => {
-            console.log(data)
-            if (item) {
-                total += item.price*item.inTheCart;
-                container.innerHTML += `
-                    <div class="cart-item" id="item-${item.id}">
-                        <img src=${item.images[0]} alt=${item.title}>
-                        <div class="cart-title">
-                            <h2>${item.title}</h2>
-                            <p>${item.description}</p>
-                        </div>
-                        <p class="price">$${item.price}</p>
-                        <div class="quantity-total">
-                            <div>
-                                <div class="input-group">
-                                    <button id="decrement" data-id="${item.id}" class=${(item.inTheCart===1) ? "disabled" : ""}>-</button>
-                                    <input type="text" value="${item.inTheCart}" id="quantity" readonly>
-                                    <button id="increment" data-id="${item.id}" class=${(item.inTheCart===item.stock) ? "disabled" : ""}>+</button>
-                                </div>
-                                <p>${(item.inTheCart===item.stock) ? "Stock: "+item.stock : ""}</p>
-                            </div>
-
-                            <div class="total">$${(item.price * item.inTheCart).toFixed(2)}</div>
-                        </div>
-                        <div class="cart-btn">
-                            <button type="button" class="btn btn-danger" data-id="${item.id}">
-                                <i class="fa-solid fa-trash"></i>Eliminar
-                            </button>
-                        </div>
+    items.forEach(item => {
+        if (item) {
+            total += item.price*item.inTheCart;
+            container.innerHTML += `
+                <div class="cart-item" id="item-${item.id}">
+                    <img src=${item.images[0]} alt=${item.title}>
+                    <div class="cart-title">
+                        <h2>${item.title}</h2>
+                        <p>${item.description}</p>
                     </div>
-                `;
-            }
-        });
-    });
+                    <p class="price">$${item.price}</p>
+                    <div class="quantity-total">
+                        <div>
+                            <div class="input-group">
+                                <button id="decrement" data-id="${item.id}" class=${(item.inTheCart===1) ? "disabled" : ""}>-</button>
+                                <input type="text" value="${item.inTheCart}" id="quantity" readonly>
+                                <button id="increment" data-id="${item.id}" class=${(item.inTheCart===item.stock) ? "disabled" : ""}>+</button>
+                            </div>
+                            <p>${(item.inTheCart===item.stock) ? "Stock: "+item.stock : ""}</p>
+                        </div>
 
+                        <div class="total">$${(item.price * item.inTheCart).toFixed(2)}</div>
+                    </div>
+                    <div class="cart-btn">
+                        <button type="button" class="btn btn-danger" data-id="${item.id}">
+                            <i class="fa-solid fa-trash"></i>Eliminar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    });
 
     container.addEventListener('click', function(event) {
         if (event.target && event.target.classList.contains('btn-danger')) {
