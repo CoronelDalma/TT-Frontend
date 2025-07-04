@@ -104,7 +104,7 @@ async function updateProductQuantity(itemId, action) {
         } else if (action === "remove") {
             item.inTheCart = 0;
         }
-        qty = item.hasOwnProperty("inTheCart") ? item.inTheCart : 1;
+        qty = item.hasOwnProperty("inTheCart") ? Number(item.inTheCart) : 1;
         fetch(`${ORDERS_URL}/${orderId}/items/${item.id}`, {
             method: "PUT",
             headers: {
@@ -117,10 +117,10 @@ async function updateProductQuantity(itemId, action) {
             localStorage.removeItem('cart');
             localStorage.removeItem('orderId'); // Clear orderId if cart is empty
         }
-        displayCart();
-        updateCartCount();
-        updateQuantity();
     }
+    //displayCart();
+    updateCartCount();
+    updateQuantity();
 }
 
 async function updateQuantity() {
