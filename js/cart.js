@@ -100,7 +100,8 @@ async function modifyQuantities(event) {
 
 // display
 async function displayCart() {
-    let items = JSON.parse(localStorage.getItem('cart')) || [];
+    //let items = JSON.parse(localStorage.getItem('cart')) || [];
+    let itemsFromAPI = await getItems();
     var total = 0;
 
     const container = document.querySelector(".container");
@@ -109,7 +110,7 @@ async function displayCart() {
         <h1 class="h1-center">Carrito de Compras</h1>
     `;
 
-    items.forEach(item => {
+    itemsFromAPI.forEach(item => {
         if (item) {
             total += item.price*item.inTheCart;
             container.innerHTML += `
@@ -153,7 +154,7 @@ async function displayCart() {
         }
     });
 
-    if (items.length>0) {
+    if (itemsFromAPI.length>0) {
         container.innerHTML +=  `
             <div class="cart-total">
                 <h2>Total: $${total.toFixed(2)}</h2>
