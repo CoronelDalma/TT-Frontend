@@ -18,14 +18,15 @@ async function getItems() {
     });
 };
 
-async function updateCartCount() {
-    const cart = await getItems();
+function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     document.querySelector(".cart-count").innerText = cart.length < 10 ? `${cart.length}` : "+9";
 }
 
 async function removeItemFromCart(id) {
     await updateProductQuantity(id, "remove"); // Set quantity to 0 to remove the item
-    let cart = await getItems();
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart = cart.filter(item => item.id !== id);
     localStorage.setItem('cart', JSON.stringify(cart));
 }
@@ -79,7 +80,8 @@ async function updateProductQuantity(itemId, action) {
 
 async function updateQuantity() {
     var addCartBtn =  document.querySelectorAll('.add-cart');
-    let cart = await getItems();
+    
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.forEach(item => {
         let btn = Array.from(addCartBtn).find(button => Number(button.id) === item.id);
         if (btn){
@@ -98,7 +100,7 @@ async function modifyQuantities(event) {
 
 // display
 async function displayCart() {
-    let items = await getItems();
+    let items = JSON.parse(localStorage.getItem('cart')) || [];
     var total = 0;
 
     const container = document.querySelector(".container");
