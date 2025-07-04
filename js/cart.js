@@ -55,12 +55,26 @@ function decrementItem(id) {
     }
 }
 
-function incrementItem(id) {
-    let cart = getItems();
+async function incrementItem(id) {
+    let cart = await getItems();
+    console.log("cart", cart);
+    console.log("id", id);
     const item = cart.find(item => item.id === id);
+    console.log("item", item);
     if (item && item.stock > item.inTheCart) {
         let newValor = item.inTheCart +1;
         item.inTheCart=newValor;
+        // update order
+        /*const response = await fetch(`${ORDERS_URL}/${item.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ qty: newValor })
+        });
+        if (!response.ok) {
+            console.error('Error updating item quantity:', response.statusText);
+        }*/
         localStorage.setItem('cart', JSON.stringify(cart));
     }
 }

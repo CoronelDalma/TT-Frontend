@@ -1,5 +1,6 @@
 const URL_CATEGORIES = "http://localhost:8080/api/categories";
-const URL_ITEMS = "http://localhost:8080/api/articulos"
+const URL_ITEMS = "http://localhost:8080/api/articulos";
+const URL_ORDERS = "http://localhost:8080/api/orders";
 
 // Get products category list
 fetch(URL_CATEGORIES)
@@ -43,29 +44,129 @@ function updateData(currentPage) {
 }
 
 // ----- cart
-function getItems() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    return cart;
+async function getItems() {
+    const response = await fetch(URL_ORDERS);
+    const orders = await response.json();
+    const allItemsByUser = orders.filter(order => order.customer === null); // I don't have any clients yet.
+    return allItemsByUser.flatMap(order => order.items).map(item => {
+        let qty = item.qty || 1; // Default to 1 if not specified
+        return {
+            id: item.articulo.id,
+            title: item.articulo.name,
+            description: item.articulo.description,
+            price: item.articulo.price,
+            stock: item.articulo.stock,
+            inTheCart: qty,
+            images: item.articulo.imagesUrl || ["https://via.placeholder.com/150"] // Default image if none provided
+        };
+    });
+};
+
+
+// The product exists in the order, update the quantity
+async function updateProductQuantity(orderId, product, action) {
+    if (product && product.id) {
+        if (action === "increase" && product.inTheCart < product.stock) {
+            product.inTheCart += 1;
+        } else if (action === "decrease" && product.inTheCart > 1) {
+            product.inTheCart -= 1;
+        }
+        qty = product.inTheCart || 1;
+        fetch(`${URL_ORDERS}/${orderId}/items/${product.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(qty)
+        });
+        //localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+        updateQuantity();
+    }
 }
-function updateCartCount() {
-    let cart = getItems();
+
+async function addOrderItem(orderId, product) {
+    if (product && product.id) {
+        fetch(`${URL_ORDERS}/${orderId}/items/${product.id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+        //localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+        updateQuantity();
+    }
+}
+
+async function updateCartCount() {
+    let cart = await getItems();
     document.querySelector(".cart-count").innerText = cart.length < 10 ? `${cart.length}` : "+9";
 }
 
-function addCart(product) {
-    console.log("agregar el producto");
-    console.log(product);
-    let cart = getItems();
+async function creationOrder(productId) {
+    const newOrder = {
+        customer: null,
+        /*items: [{
+            articulo: {id:productId},
+            qty: 1
+        }],*/
+        items: [],
+        creationDate: new Date().toISOString(),
+        status: "PENDING",
+        deliveryAddress: {
+            street: "Sin definir",
+            city: "Desconocida",
+            province: "NA",
+            country: "Argentina",
+            zipCode: "0000"
+        }
+    };
+
+    const response = await fetch("http://localhost:8080/api/orders", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newOrder)
+    });
+
+    const createdOrder = await response.json();
+    localStorage.setItem("orderId", JSON.stringify(createdOrder.id));
+    return createdOrder.id;
+}
+
+function getOrderId(productId) {
+    const orderId = localStorage.getItem("orderId");
+    if (!orderId) { 
+        return creationOrder(productId);
+    } else {
+        return orderId;
+    }
+}
+
+async function addCart(product) {
+    let orderId = await getOrderId(product.id);
+    let cart = await getItems();
 
     // modifications to the json to not add repeats and only add the quantity that is in the cart
     let existingProduct = cart.length>0 ? cart.find(item => item.id === product.id) : false;
-    if (existingProduct && existingProduct.stock>existingProduct.inTheCart) existingProduct.inTheCart +=1
+
+    if (existingProduct && existingProduct.stock>existingProduct.inTheCart) {
+        //existingProduct.inTheCart +=1;
+        updateProductQuantity(orderId, existingProduct, "increase");}
     else {
-        product.inTheCart = 1;
+        addOrderItem(orderId, product);
+       // product.inTheCart = 1;
         cart.push(product);
+
     }
     // save
     localStorage.setItem("cart", JSON.stringify(cart));
+    if (cart.length === 0) {
+        localStorage.removeItem("orderId");
+        alert("No hay productos en el carrito, se ha eliminado la orden.");
+    }
     alert(`${product.title} ha sido agregado al carrito!`);
     updateCartCount();
     updateQuantity();
@@ -76,17 +177,17 @@ function seeProduct(product) {
     window.location.href = "product.html";
 }
 
-function seeQuantity() {
-    const cart = getItems();
+async function seeQuantity() {
+    const cart = await getItems();
     var addCartBtn =  document.querySelectorAll('.add-cart');
     cart.forEach(item => {
         let btn = Array.from(addCartBtn).find(button => Number(button.id) === item.id); 
         btn && (btn.innerHTML = `${item.inTheCart}<i class="fa-solid fa-cart-plus fa-xl "></i>`);
     })
 }
-function updateQuantity() {
+async function updateQuantity() {
     var addCartBtn =  document.querySelectorAll('.add-cart');
-    let cart = getItems();
+    let cart = await getItems();
     cart.forEach(item => {
         let btn = Array.from(addCartBtn).find(button => Number(button.id) === item.id);
         if (btn){
@@ -128,13 +229,9 @@ function displayData(data) {
             addCartBtn.forEach(btn => {
                 btn.addEventListener('click', function(event) {
                     event.preventDefault();
-                    //let index = (((btn.id-1) % data.products.length) + data.products.length) % data.products.length;
-                    let index = data.products.findIndex(item => item.id === Number(btn.id));
-                    console.log("index", index);
-                    console.log("btn.id", btn.id);
-                    console.log("data.products[index]", data.products[index]);
-                    console.log("data.products", data.products);
-                   // addCart(data.products[index]);
+
+                    let index = data.findIndex(item => item.id === Number(btn.id));
+                    addCart(data[index]);
                 })
             })
             // see product
