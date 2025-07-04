@@ -40,6 +40,10 @@
     margin-top: 20px;
 }
 
+.total > p {
+    width: 50px;
+}
+
 .quantity-total {
     display: flex;
     flex-wrap: nowrap;

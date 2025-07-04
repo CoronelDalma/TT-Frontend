@@ -18,25 +18,13 @@ async function getItems() {
     });
 };
 
-function updateItemQuantity(itemId, qty) {
-    const orderId = localStorage.getItem("orderId");
-
-    fetch(`${ORDERS_URL}/${orderId}/items/${itemId}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(qty)
-    });
-}
-
 async function updateCartCount() {
     const cart = await getItems();
     document.querySelector(".cart-count").innerText = cart.length < 10 ? `${cart.length}` : "+9";
 }
 
 async function removeItemFromCart(id) {
-    updateProductQuantity(id, "remove"); // Set quantity to 0 to remove the item
+    await updateProductQuantity(id, "remove"); // Set quantity to 0 to remove the item
     let cart = await getItems();
     cart = cart.filter(item => item.id !== id);
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -49,47 +37,14 @@ function removeFromDOM(itemId) {
     }
 }
 
-function removeItem(id) {
-    removeItemFromCart(id);
+async function removeItem(id) {
+    await removeItemFromCart(id);
     removeFromDOM(id);
     updateCartCount();
     displayCart();
 }
 
 // quantities
-/*function decrementItem(id) {
-    let cart = getItems();
-    const item = cart.find(item => item.id === id);
-    if (item && item.inTheCart>1) {
-        item.inTheCart= item.inTheCart - 1;
-        localStorage.setItem('cart', JSON.stringify(cart));    
-    }
-}*/
-
-/*async function incrementItem(id) {
-    const orderId = localStorage.getItem("orderId");
-    let cart = await getItems();
-
-    const item = cart.find(item => item.id === id);
-   
-    if (item && item.stock > item.inTheCart) {
-        let newValor = item.inTheCart +1;
-        item.inTheCart=newValor;
-        // update order
-        const response = await fetch(`${ORDERS_URL}/${orderId}/items/${item.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newValor)
-        });
-        if (!response.ok) {
-            console.error('Error updating item quantity:', response.statusText);
-        }
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }
-}*/
-
 async function updateProductQuantity(itemId, action) {
     const orderId = localStorage.getItem("orderId");
     let cart = await getItems();
@@ -105,7 +60,7 @@ async function updateProductQuantity(itemId, action) {
             item.inTheCart = 0;
         }
         qty = item.hasOwnProperty("inTheCart") ? Number(item.inTheCart) : 1;
-        fetch(`${ORDERS_URL}/${orderId}/items/${item.id}`, {
+        await fetch(`${ORDERS_URL}/${orderId}/items/${item.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -118,9 +73,8 @@ async function updateProductQuantity(itemId, action) {
             localStorage.removeItem('orderId'); // Clear orderId if cart is empty
         }
     }
-    //displayCart();
-    updateCartCount();
-    updateQuantity();
+    await updateCartCount();
+    await updateQuantity();
 }
 
 async function updateQuantity() {
@@ -134,11 +88,12 @@ async function updateQuantity() {
     })
 }
 
-function modifyQuantities(event) {
+async function modifyQuantities(event) {
     const productId = Number(event.target.getAttribute('data-id'));
-    event.target.id === 'decrement' ? updateProductQuantity(productId, "decrease") : updateProductQuantity(productId, "increase");
-    displayCart();
+    //event.target.id === 'decrement' ? updateProductQuantity(productId, "decrease") : updateProductQuantity(productId, "increase");
+    await updateProductQuantity(productId, event.target.id === 'decrement' ? "decrease" : "increase");
     event.stopImmediatePropagation();
+    await displayCart();
 }
 
 // display
@@ -173,7 +128,7 @@ async function displayCart() {
                             <p>${(item.inTheCart===item.stock) ? "Stock: "+item.stock : ""}</p>
                         </div>
 
-                        <div class="total">$${(item.price * item.inTheCart).toFixed(2)}</div>
+                        <div class="total"><p>$${(item.price * item.inTheCart).toFixed(2)}</p></div>
                     </div>
                     <div class="cart-btn">
                         <button type="button" class="btn btn-danger" data-id="${item.id}">
