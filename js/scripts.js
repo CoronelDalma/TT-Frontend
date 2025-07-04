@@ -71,7 +71,7 @@ async function updateProductQuantity(orderId, product, action) {
         } else if (action === "decrease" && product.inTheCart > 1) {
             product.inTheCart -= 1;
         }
-        qty = product.inTheCart || 1;
+        qty = product.hasOwnProperty("inTheCart") ? product.inTheCart : 1;
         fetch(`${URL_ORDERS}/${orderId}/items/${product.id}`, {
             method: "PUT",
             headers: {

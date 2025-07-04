@@ -18,15 +18,26 @@ async function getItems() {
     });
 };
 
+function updateItemQuantity(itemId, qty) {
+    const orderId = localStorage.getItem("orderId");
 
-function updateCartCount() {
-    getItems().then(cart => {
-        document.querySelector(".cart-count").innerText = cart.length < 10 ? `${cart.length}` : "+9";
+    fetch(`${ORDERS_URL}/${orderId}/items/${itemId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(qty)
     });
 }
 
-function removeItemFromCart(id) {
-    let cart = getItems();
+async function updateCartCount() {
+    const cart = await getItems();
+    document.querySelector(".cart-count").innerText = cart.length < 10 ? `${cart.length}` : "+9";
+}
+
+async function removeItemFromCart(id) {
+    updateProductQuantity(id, "remove"); // Set quantity to 0 to remove the item
+    let cart = await getItems();
     cart = cart.filter(item => item.id !== id);
     localStorage.setItem('cart', JSON.stringify(cart));
 }
@@ -46,41 +57,86 @@ function removeItem(id) {
 }
 
 // quantities
-function decrementItem(id) {
+/*function decrementItem(id) {
     let cart = getItems();
     const item = cart.find(item => item.id === id);
     if (item && item.inTheCart>1) {
         item.inTheCart= item.inTheCart - 1;
         localStorage.setItem('cart', JSON.stringify(cart));    
     }
-}
+}*/
 
-async function incrementItem(id) {
+/*async function incrementItem(id) {
+    const orderId = localStorage.getItem("orderId");
     let cart = await getItems();
-    console.log("cart", cart);
-    console.log("id", id);
+
     const item = cart.find(item => item.id === id);
-    console.log("item", item);
+   
     if (item && item.stock > item.inTheCart) {
         let newValor = item.inTheCart +1;
         item.inTheCart=newValor;
         // update order
-        /*const response = await fetch(`${ORDERS_URL}/${item.id}`, {
+        const response = await fetch(`${ORDERS_URL}/${orderId}/items/${item.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ qty: newValor })
+            body: JSON.stringify(newValor)
         });
         if (!response.ok) {
             console.error('Error updating item quantity:', response.statusText);
-        }*/
+        }
         localStorage.setItem('cart', JSON.stringify(cart));
     }
+}*/
+
+async function updateProductQuantity(itemId, action) {
+    const orderId = localStorage.getItem("orderId");
+    let cart = await getItems();
+
+    const item = cart.find(item => item.id === itemId);
+
+    if (item && item.id) {
+        if (action === "increase" && item.inTheCart < item.stock) {
+            item.inTheCart += 1;
+        } else if (action === "decrease" && item.inTheCart > 1) {
+            item.inTheCart -= 1;
+        } else if (action === "remove") {
+            item.inTheCart = 0;
+        }
+        qty = item.hasOwnProperty("inTheCart") ? item.inTheCart : 1;
+        fetch(`${ORDERS_URL}/${orderId}/items/${item.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(qty)
+        });
+        localStorage.setItem("cart", JSON.stringify(cart));
+        if (cart.length === 0) {
+            localStorage.removeItem('cart');
+            localStorage.removeItem('orderId'); // Clear orderId if cart is empty
+        }
+        displayCart();
+        updateCartCount();
+        updateQuantity();
+    }
 }
+
+async function updateQuantity() {
+    var addCartBtn =  document.querySelectorAll('.add-cart');
+    let cart = await getItems();
+    cart.forEach(item => {
+        let btn = Array.from(addCartBtn).find(button => Number(button.id) === item.id);
+        if (btn){
+            btn.innerHTML = `${item.inTheCart}<i class="fa-solid fa-cart-plus fa-xl "></i>`;
+        }     
+    })
+}
+
 function modifyQuantities(event) {
     const productId = Number(event.target.getAttribute('data-id'));
-    event.target.id === 'decrement' ? decrementItem(productId) : incrementItem(productId);
+    event.target.id === 'decrement' ? updateProductQuantity(productId, "decrease") : updateProductQuantity(productId, "increase");
     displayCart();
     event.stopImmediatePropagation();
 }
@@ -95,7 +151,7 @@ async function displayCart() {
     container.innerHTML += `
         <h1 class="h1-center">Carrito de Compras</h1>
     `;
-  
+
     items.forEach(item => {
         if (item) {
             total += item.price*item.inTheCart;
